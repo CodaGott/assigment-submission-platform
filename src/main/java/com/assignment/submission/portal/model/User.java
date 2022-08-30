@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "users")
 public class User implements UserDetails {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     private LocalDate classStartDate;
     private String username;
