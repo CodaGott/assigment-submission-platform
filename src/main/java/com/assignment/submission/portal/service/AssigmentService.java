@@ -37,7 +37,7 @@ public class AssigmentService {
 
     public Assignment updateAssignment(Long id, AssignmentDto assignmentDto) {
 
-        Assignment assignmentToUpdate = assigmentRepository.findById(id).get();
+        Assignment assignmentToUpdate = findAssignmentById(id);
         if (assignmentToUpdate != null){
             assignmentToUpdate.setStatus(assignmentDto.getStatus());
             assignmentToUpdate.setBranch(assignmentDto.getBranch());
@@ -48,5 +48,13 @@ public class AssigmentService {
             throw new NoSuchElementException("Assignment with id not found");
         }
         return assigmentRepository.save(assignmentToUpdate);
+    }
+
+    private Assignment findAssignmentById(Long id){
+        if (assigmentRepository.findById(id).isEmpty()){
+            throw new NoSuchElementException("Assignment with id not found");
+        }else {
+            return assigmentRepository.findById(id).get();
+        }
     }
 }
