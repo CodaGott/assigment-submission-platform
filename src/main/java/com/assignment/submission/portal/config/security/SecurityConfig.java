@@ -1,4 +1,4 @@
-package com.assignment.submission.portal.config;
+package com.assignment.submission.portal.config.security;
 
 import com.assignment.submission.portal.filter.JwtFilter;
 import com.assignment.submission.portal.util.CustomPasswordEncoder;

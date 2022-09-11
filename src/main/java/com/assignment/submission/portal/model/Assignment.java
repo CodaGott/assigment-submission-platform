@@ -6,12 +6,16 @@ import javax.persistence.*;
 public class Assignment {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    private Integer number;
+//    private String name;
+//    @Enumerated
+//    private AssignmentEnum assignmentEnum;
     private String status;
-    private String gitUrl;
+    private String githubUrl;
     private String branch;
     private String codeReviewVideoUrl;
     // Can't have assignment without a user.
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User user;
     // TODO private User assignedTo;
 
@@ -32,12 +36,12 @@ public class Assignment {
         this.status = status;
     }
 
-    public String getGitUrl() {
-        return gitUrl;
+    public String getGithubUrl() {
+        return githubUrl;
     }
 
-    public void setGitUrl(String gitUrl) {
-        this.gitUrl = gitUrl;
+    public void setGithubUrl(String githubUrl) {
+        this.githubUrl = githubUrl;
     }
 
     public String getBranch() {
@@ -62,5 +66,21 @@ public class Assignment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }

@@ -1,34 +1,35 @@
 package com.assignment.submission.portal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "users")
 public class User implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long id;
     private LocalDate classStartDate;
     private String username;
+    @JsonIgnore
     private String password;
 //    @OneToMany
 //    private List<Assignment> assignment = new ArrayList<>();
 
-    public Long getUserId() {
-        return userId;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnore
+    private Set<Authority> authorities = new HashSet<>();
+
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getClassStartDate() {
@@ -70,9 +71,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new Authority("ROLE_STUDENT"));
-        return roles;
+//        List<GrantedAuthority> roles = new ArrayList<>();
+//        roles.add(new Authority("ROLE_STUDENT"));
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
