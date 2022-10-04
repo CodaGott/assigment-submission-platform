@@ -12,6 +12,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.assignment.submission.portal.constants.RoleConstants.ROLE_CODE_REVIEWER;
+
 @Service
 public class AssigmentService {
 
@@ -51,7 +53,15 @@ public class AssigmentService {
     }
 
     public Set<Assignment> findByUser(User user){
-        return assigmentRepository.findByUser(user);
+        boolean hasCodeReviewerRole = user.getAuthorities().stream().filter(auth -> ROLE_CODE_REVIEWER.equals(auth.getAuthority()))
+                .count() > 0;
+        if (hasCodeReviewerRole){
+            // TODO ==>> : Load assignment if you have a code_reviewer role.
+            return assigmentRepository.findByCodeReviewer(user);
+        }else {
+            // TODO ==>> : Load assignment if you have a student role.
+            return assigmentRepository.findByUser(user);
+        }
     }
 
     public Optional<Assignment> findById(Long assignmentId) {

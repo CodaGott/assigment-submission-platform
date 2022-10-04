@@ -32,7 +32,7 @@ public class AssignmentController {
     @GetMapping("")
     public ResponseEntity<?> getAssignments(@AuthenticationPrincipal User user){
         Set<Assignment> assignmentByUser = assigmentService.findByUser(user);
-//        log.info("Assignments: {}", assigmentService.findByUser(user).toString());
+        log.info("Assignments: {}", assigmentService.findByUser(user).toString());
         return ResponseEntity.ok(assignmentByUser);
     }
 
