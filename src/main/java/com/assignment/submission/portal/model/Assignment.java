@@ -17,7 +17,9 @@ public class Assignment {
     // Can't have assignment without a user.
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User user;
-    // TODO private User assignedTo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User codeReviewer;
 
 
     public Long getId() {
@@ -82,5 +84,13 @@ public class Assignment {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public User getCodeReviewer() {
+        return codeReviewer;
+    }
+
+    public void setCodeReviewer(User codeReviewer) {
+        this.codeReviewer = codeReviewer;
     }
 }

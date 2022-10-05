@@ -5,6 +5,8 @@ import com.assignment.submission.portal.model.User;
 import com.assignment.submission.portal.payload.AssignmentDto;
 import com.assignment.submission.portal.payload.AssignmentResponse;
 import com.assignment.submission.portal.service.AssigmentService;
+import com.assignment.submission.portal.service.UserService;
+import com.assignment.submission.portal.util.AuthorityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.assignment.submission.portal.constants.RoleConstants.ROLE_CODE_REVIEWER;
+
 @RestController
 @RequestMapping("api/assignments")
 @Slf4j
@@ -22,6 +26,9 @@ public class AssignmentController {
 
     @Autowired
     private AssigmentService assigmentService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("")
     public ResponseEntity<?> createAssignment(@AuthenticationPrincipal User user){
@@ -45,6 +52,15 @@ public class AssignmentController {
 
     @PutMapping("{assignmentId}")
     public ResponseEntity<?> updateAssignment(@PathVariable Long assignmentId, @RequestBody AssignmentDto assignment, @AuthenticationPrincipal User user){
+
+        if (assignment.getCodeReviewer() != null){
+            User codeReviewer = assignment.getCodeReviewer();
+            codeReviewer = userService.findUserByUsername(codeReviewer.getUsername()).orElse(new User());
+
+            if (AuthorityUtil.hasRole(ROLE_CODE_REVIEWER, codeReviewer)){
+                assignment.setCodeReviewer(codeReviewer);
+            }
+        }
         Assignment updatedAssignment = assigmentService.updateAssignment(assignmentId, assignment);
         return ResponseEntity.ok(updatedAssignment);
     }
