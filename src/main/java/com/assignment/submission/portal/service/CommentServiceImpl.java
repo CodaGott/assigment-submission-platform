@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CommentServiceImpl implements CommentService{
@@ -37,8 +38,9 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Comment getAComment(Long id) {
-        return null;
+    public Set<Comment> getAComment(Long id) {
+        Set<Comment> comments = commentRepository.findById(id);
+        return comments;
     }
 
     @Override
